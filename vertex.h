@@ -4,6 +4,9 @@
 /*! Dimensions de l'espace */
 #define DIM 2
 
+#define X coords[0]
+#define Y coords[1]
+
 /*! Structure pour representer un point. */
 typedef struct
 {

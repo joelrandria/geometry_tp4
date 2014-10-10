@@ -17,7 +17,8 @@
 extern char *optarg;
 extern int opterr;
 
-// Options exercice 1
-extern char* _optex1_filename;
+// Variables globales communes
+extern int _point_count;
+extern vertex* _points;
 
 #endif

@@ -7,5 +7,5 @@
 
 void tpga4_ex1()
 {
-  
+  printf("Nb de points: %d\r\n", _point_count);
 }
