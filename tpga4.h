@@ -1,5 +1,5 @@
-#ifndef __TPGA2_H__
-#define __TPGA2_H__
+#ifndef __TPGA4_H__
+#define __TPGA4_H__
 
 #include <stdio.h>
 #include <stdlib.h>
