@@ -1,9 +1,14 @@
 #include <stdio.h>
+#include <math.h>
 
 #include <GL/glut.h>
 
 #include "tpga4.h"
 #include "tpga4_ex1.h"
+
+#define ORIENTATION_CCW		1
+#define ORIENTATION_INLINE	0
+#define ORIENTATION_CW		-1
 
 // Enveloppe convexe
 int_list* _convex_hull = 0;
@@ -109,28 +114,56 @@ int lexico_min(vertex* points, unsigned int point_count)
 
 int orientation(vertex* a, vertex* b, vertex* c)
 {
-  return ((a->Y - b->Y) * (c->X - a->X) + (b->X - a->X) * (c->Y - a->Y));
+  int normal_dot_product;
+
+  normal_dot_product = (a->Y - b->Y) * (c->X - a->X) + (b->X - a->X) * (c->Y - a->Y);
+
+  if (normal_dot_product > 0)
+    return ORIENTATION_CCW;
+  else if (normal_dot_product == 0)
+    return ORIENTATION_INLINE;
+  else
+    return ORIENTATION_CW;
+}
+
+double square_distance_eucl(vertex* a, vertex* b)
+{
+  return (pow(b->X - a->X, 2) + pow(b->Y - a->Y, 2));
 }
 
 int local_polar_min(vertex* points, unsigned int point_count, int point)
 {
   int i;
   int local_polar_min;
+  int current_point_orientation;
 
   if (point_count <= 0)
     return -1;
 
   for (i = 0; i < point_count; ++i)
+  {
     if (i != point)
+    {
       local_polar_min = i;
+      break;
+    }
+  }
 
   for (i = 0; i < point_count; ++i)
   {
     if (i == point)
       continue;
 
-    if (orientation(&points[point], &points[local_polar_min], &points[i]) < 0)
+    current_point_orientation = orientation(&points[point], &points[local_polar_min], &points[i]);
+    if (current_point_orientation == ORIENTATION_CW)
+    {
       local_polar_min = i;
+    }
+    else if (current_point_orientation == ORIENTATION_INLINE)
+    {
+      if (square_distance_eucl(&points[point], &points[i]) > square_distance_eucl(&points[point], &points[local_polar_min]))
+	local_polar_min = i;
+    }
   }
 
   return local_polar_min;
