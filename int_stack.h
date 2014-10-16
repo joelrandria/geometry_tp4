@@ -1,10 +1,13 @@
 #ifndef __INT_STACK_H__
 #define __INT_STACK_H__
 
+#include <stdio.h>
+#include <stdlib.h>
+
 typedef struct _int_stack
 {
-  int value;
-  struct _int_stack* next;
+	int value;
+	struct _int_stack* next;
 } int_stack;
 
 int_stack* int_stack_create(int value);

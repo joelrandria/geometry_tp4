@@ -1,7 +1,5 @@
 #include "int_list.h"
 
-#include <stdlib.h>
-
 int_list* int_list_create(int value)
 {
 	int_list* item;

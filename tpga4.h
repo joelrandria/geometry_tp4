@@ -7,6 +7,11 @@
 #include <math.h>
 #include <unistd.h>
 #include <GL/glut.h>
+#include <string.h>
+
+#include "tpga4_ex1.h"
+#include "tpga4_ex2.h"
+
 
 #include "vertex.h"
 #include "int_list.h"
@@ -30,8 +35,8 @@ void on_idle_event();
 
 // Fonctions d'affichage
 void draw();
-void draw_points(vertex* points, int point_count);
-void draw_hull(vertex* points, int_list* hull_points);
+void draw_points(const vertex* points, const unsigned int point_count);
+void draw_hull(const vertex* points, const int_list* hull_points);
 
 
 #endif
