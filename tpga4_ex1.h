@@ -8,6 +8,6 @@
 void tpga4_ex1();
 
 // Enveloppe convexe: Algorithme de Jarvis (Gift Wrapping)
-int_list* jarvis_convex_hull(vertex* points, unsigned int point_count);
+int_list* jarvis_convex_hull(const vertex* points, unsigned int point_count);
 
 #endif

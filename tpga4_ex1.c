@@ -5,15 +5,16 @@
 #include "tpga4.h"
 #include "tpga4_ex1.h"
 
-// Enveloppe convexe
-int_list* _convex_hull = 0;
+#define ORIENTATION_CW		-1
+#define ORIENTATION_INLINE	0
+#define ORIENTATION_CCW		1
 
 void tpga4_ex1()
 {
   _convex_hull = jarvis_convex_hull(_points, _point_count);
 }
 
-int lexico_cmp(vertex* a, vertex* b)
+int lexico_cmp(const vertex* a, const vertex* b)
 {
   if (a->X < b->X)
   {
@@ -37,7 +38,7 @@ int lexico_cmp(vertex* a, vertex* b)
 
   return 1;
 }
-int lexico_min(vertex* points, unsigned int point_count)
+int lexico_min(const vertex* points, unsigned int point_count)
 {
   int i;
   int min;
@@ -70,7 +71,7 @@ int orientation(const vertex* a, const vertex* b, const vertex* c)
     return ORIENTATION_CW;
 }
 
-double square_distance_eucl(vertex* a, vertex* b)
+double square_distance_eucl(const vertex* a, const vertex* b)
 {
   return (pow(b->X - a->X, 2) + pow(b->Y - a->Y, 2));
 }
@@ -112,7 +113,7 @@ int local_polar_min(const vertex* points, unsigned int point_count, int point)
   return local_polar_min;
 }
 
-int_list* jarvis_convex_hull( const vertex* points, unsigned int point_count)
+int_list* jarvis_convex_hull(const vertex* points, unsigned int point_count)
 {
   int_list* hull;
   int last_hull_point;
