@@ -14,7 +14,6 @@ int equal(const vertex* p1, const vertex* p2)
 	return (p1->coords[0] == p2->coords[0] && p1->coords[1] == p2->coords[1]);
 }
 
-
 int cote(const vertex* p1, const vertex* p2, const vertex* p)
 {
 	if(equal(p1,p2) || equal(p1,p) || equal(p2,p))
