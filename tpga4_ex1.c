@@ -33,7 +33,7 @@ void draw()
 
   glFlush();
 }
-void draw_points(vertex* points, int point_count)
+void draw_points(const vertex* points, int point_count)
 {
   int i;
 
@@ -45,116 +45,106 @@ void draw_points(vertex* points, int point_count)
 
   glEnd();
 }
-void draw_hull(vertex* points, int_list* hull_points)
+void draw_hull(const vertex* points, int_list* hull_points)
 {
-  int hull_point;
+	int hull_point;
 
-  glBegin(GL_LINE_LOOP);
-  glColor3f(0, 1, 0);
+	glBegin(GL_LINE_LOOP);
+	glColor3f(0, 1, 0);
 
-  while (hull_points)
-  {
-    hull_point = hull_points->value;
+	while (hull_points)
+	{
+		hull_point = hull_points->value;
 
-    glVertex2f(points[hull_point].X, points[hull_point].Y);
+		glVertex2f(points[hull_point].X, points[hull_point].Y);
 
-    hull_points = hull_points->next;
-  }
+		hull_points = hull_points->next;
+	}
 
-  glEnd();
+	glEnd();
 }
 
-int lexico_cmp(vertex* a, vertex* b)
+int lexico_cmp(const vertex* a, const vertex* b)
 {
-  if (a->X < b->X)
-  {
-    return -1;
-  }
-  else if (a->X == b->X)
-  {
-    if (a->Y < b->Y)
-    {
-      return -1;
-    }
-    else if (a->Y == b->Y)
-    {
-      return 0;
-    }
-    else
-    {
-      return 1;
-    }
-  }
-
-  return 1;
+	if (a->X < b->X)
+		return -1;
+	else if (a->X == b->X)
+	{
+		if (a->Y < b->Y)
+			return -1;
+		else if (a->Y == b->Y)
+			return 0;
+		//else return 1
+	}
+	return 1;
 }
-int lexico_min(vertex* points, unsigned int point_count)
+int lexico_min(const vertex* points, unsigned int point_count)
 {
-  int i;
-  int min;
+	int i;
+	int min;
 
-  if (point_count <= 0)
-    return -1;
+	if (point_count <= 0)
+		return -1;
 
-  min = 0;
+	min = 0;
 
-  for (i = 1; i < point_count; ++i)
-  {
-    if (lexico_cmp(&points[i], &points[min]) < 0)
-      min = i;
-  }
+	for (i = 1; i < point_count; ++i)
+	{
+		if (lexico_cmp(&points[i], &points[min]) < 0)
+			min = i;
+	}
 
-  return min;
+	return min;
 }
 
-int orientation(vertex* a, vertex* b, vertex* c)
+int orientation(const vertex* a, const vertex* b, const vertex* c)
 {
-  return ((a->Y - b->Y) * (c->X - a->X) + (b->X - a->X) * (c->Y - a->Y));
+	return ((a->Y - b->Y) * (c->X - a->X) + (b->X - a->X) * (c->Y - a->Y));
 }
 
-int local_polar_min(vertex* points, unsigned int point_count, int point)
+int local_polar_min(const vertex* points, unsigned int point_count, int point)
 {
-  int i;
-  int local_polar_min;
+	int i;
+	int local_polar_min;
 
-  if (point_count <= 0)
+	if (point_count <= 0)
     return -1;
 
-  for (i = 0; i < point_count; ++i)
-    if (i != point)
-      local_polar_min = i;
+	for (i = 0; i < point_count; ++i)
+		if (i != point)
+		{
+			local_polar_min = i;	
+			break;
+		}
 
-  for (i = 0; i < point_count; ++i)
-  {
-    if (i == point)
-      continue;
+	for (i = 0; i < point_count; ++i)
+	{
+		if (i != point && orientation(&points[point], &points[local_polar_min], &points[i]) < 0)
+			local_polar_min = i;
+	}
 
-    if (orientation(&points[point], &points[local_polar_min], &points[i]) < 0)
-      local_polar_min = i;
-  }
-
-  return local_polar_min;
+	return local_polar_min;
 }
 
-int_list* jarvis_convex_hull(vertex* points, unsigned int point_count)
+int_list* jarvis_convex_hull( const vertex* points, unsigned int point_count)
 {
-  int_list* hull;
-  int last_hull_point;
-  int lexico_min_point;
-  int local_polar_min_point;
+	int_list* hull;
+	int last_hull_point;
+	int lexico_min_point;
+	int local_polar_min_point;
 
-  lexico_min_point = lexico_min(points, point_count);
-  last_hull_point = lexico_min_point;
+	lexico_min_point = lexico_min(points, point_count);
+	last_hull_point = lexico_min_point;
 
-  hull = 0;
-  hull = int_list_enqueue(hull, lexico_min_point);
+	hull = 0;
+	hull = int_list_enqueue(hull, lexico_min_point);
 
-  while ((local_polar_min_point = local_polar_min(points, point_count, last_hull_point))
-	 != lexico_min_point)
-  {
-    hull = int_list_enqueue(hull, local_polar_min_point);
-    last_hull_point = local_polar_min_point;
-  }
+	while ((local_polar_min_point = local_polar_min(points, point_count, last_hull_point))
+				!= lexico_min_point)
+	{
+		hull = int_list_enqueue(hull, local_polar_min_point);
+		last_hull_point = local_polar_min_point;
+	}
 
-  return hull;
+	return hull;
 }

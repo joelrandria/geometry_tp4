@@ -4,49 +4,49 @@
 
 int_list* int_list_create(int value)
 {
-  int_list* item;
+	int_list* item;
 
-  item = malloc(sizeof(*item));
-  item->value = value;
-  item->next = 0;
+	item = malloc(sizeof(*item));
+	item->value = value;
+	item->next = 0;
 
-  return item;
+	return item;
 }
 int_list* int_list_enqueue(int_list* list, int value)
 {
-  int_list* last;
-  int_list* new_item;
+	int_list* last;
+	int_list* new_item;
 
-  new_item = int_list_create(value);
+	new_item = int_list_create(value);
 
-  last = int_list_last(list);
-  if (!last)
-    return new_item;
+	last = int_list_last(list);
+	if (!last)
+		return new_item;
 
-  last->next = new_item;
+	last->next = new_item;
 
-  return list;
+	return list;
 }
 
 unsigned int int_list_size(int_list* list)
 {
-  unsigned int size = 0;
+	unsigned int size = 0;
 
-  while (list)
-  {
-    ++size;
-    list = list->next;
-  }
+	while (list)
+	{
+		++size;
+		list = list->next;
+	}
 
-  return size;
+	return size;
 }
 int_list* int_list_last(int_list* list)
 {
-  if (!list)
-    return 0;
+	if (!list)
+		return 0;
 
-  while (list->next)
-    list = list->next;
+	while (list->next)
+		list = list->next;
 
-  return list;
+	return list;
 }
