@@ -81,7 +81,7 @@ int local_polar_min(vertex* points, unsigned int point_count, int point)
   int local_polar_min;
   int current_point_orientation;
 
-  if (point_count <= 0)
+  if (point_count == 0)
     return -1;
 
   for (i = 0; i < point_count; ++i)
