@@ -6,24 +6,37 @@
 
 /*! Dimensions de l'espace */
 #define DIM 2
-
 #define X coords[0]
 #define Y coords[1]
 
+// Orientations
 #define ORIENTATION_CW		-1
 #define ORIENTATION_INLINE	0
 #define ORIENTATION_CCW		1
 
+// Liens inter vertices
+#define VLINK_TYPE_COUNT	2
+#define VLINK_NATURAL		0
+#define VLINK_POLAR		1
+
+#define VLINK_DIRECTION_COUNT	2
+#define VLINK_BACKWARD		0
+#define VLINK_FORWARD		1
+
 /*! Structure pour representer un point. */
-typedef struct
+typedef struct _vertex
 {
-	double coords[DIM];
+  double coords[DIM];
+  struct _vertex* link[VLINK_TYPE_COUNT][VLINK_DIRECTION_COUNT];
 } vertex;
 
 vertex* vertex_create(double x, double y);
 
+void vertex_insert(vertex* ref, vertex* nouv, int link, int direction);
+
 double vertex_distance(const vertex* v1, const vertex* v2);
 double square_distance_eucl(const vertex* a, const vertex* b);
+
 int lexico_cmp(const vertex* a, const vertex* b);
 int lexico_min(const vertex* points, const unsigned int point_count);
 
