@@ -50,5 +50,6 @@ vertex* vertex_ajoutNaturel(vertex* ref, vertex* nouv, int direction)
 }
 vertex* vertex_ajoutNaturelFirst(vertex* ref, vertex* nouv)
 {	return ajoutNaturel(ref, VLINK_NATURAL, VLINK_BACKWARD);	}
-
+vertex* vertex_ajoutNaturelLast(vertex* ref, vertex* nouv)
+{	return ajoutNaturel(ref, VLINK_NATURAL, VLINK_FORWARD);	}
 
