@@ -15,9 +15,10 @@
 #define ORIENTATION_CCW		1
 
 // Liens inter vertices
-#define VLINK_TYPE_COUNT	2
+#define VLINK_TYPE_COUNT	3
 #define VLINK_NATURAL		0
 #define VLINK_POLAR		1
+#define VLINK_LEXICO	2
 
 #define VLINK_DIRECTION_COUNT	2
 #define VLINK_BACKWARD		0
