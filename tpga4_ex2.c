@@ -7,9 +7,32 @@ void tpga4_ex2()
 	_convex_hull = graham_convex_hull(_points, _point_count);
 }
 
+
 int_list* graham_convex_hull(vertex* points, unsigned int point_count)
 {
-	fileDePrioritePolaire(points, point_count);
+	int idG = lexico_min(points, point_count);
+	//vertex G = points[idG];
+	
+	for(int i = 0;	i < point_count;	i++)
+	{
+		if( i < point_count -1)
+		{
+			points[i].link[VLINK_POLAR][VLINK_FORWARD] = &points[i+1];
+		}
+	}
+	vertex* v;	//point de départ de la chaine simple;
+	if(idG > 0)
+	{
+		v = &points[0];
+		points[idG-1].link[VLINK_POLAR][VLINK_FORWARD] = points[idG].link[VLINK_NATURAL][VLINK_FORWARD];	//inclu si &points[idG+1] -> NULL
+	}
+	else
+		v = &points[1];
+	points[idG].link[VLINK_POLAR][VLINK_FORWARD] = NULL;
+	
+	
+	
+	//fileDePrioritePolaire(points, point_count);
 	return 0;
 }
 
