@@ -2,18 +2,23 @@
 
 #include <stdlib.h>
 
-vertex* vertex_create(double x, double y)
+void vertex_init(vertex* v, double x, double y)
 {
   int i;
   int j;
 
-  vertex* v = malloc(sizeof(*v));
-  v->coords[0] = x;
-  v->coords[1] = y;
+  v->X = x;
+  v->Y = y;
 
   for (i = 0; i < VLINK_TYPE_COUNT; ++i)
     for (j = 0; j < VLINK_DIRECTION_COUNT; ++j)
       v->link[i][j] = 0;
+}
+vertex* vertex_create(double x, double y)
+{
+  vertex* v = malloc(sizeof(*v));
+
+  vertex_init(v, x, y);
 
   return v;
 }

@@ -18,7 +18,7 @@
 #define VLINK_TYPE_COUNT	3
 #define VLINK_NATURAL		0
 #define VLINK_POLAR		1
-#define VLINK_LEXICO	2
+#define VLINK_LEXICO		2
 
 #define VLINK_DIRECTION_COUNT	2
 #define VLINK_BACKWARD		0
@@ -31,6 +31,7 @@ typedef struct _vertex
   struct _vertex* link[VLINK_TYPE_COUNT][VLINK_DIRECTION_COUNT];
 } vertex;
 
+void vertex_init(vertex* v, double x, double y);
 vertex* vertex_create(double x, double y);
 
 void vertex_insert(vertex* ref, vertex* nouv, int link, int direction);

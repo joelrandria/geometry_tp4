@@ -21,8 +21,9 @@ void create_random_points()
 	_points = malloc(sizeof(*_points) * _point_count);
 	for (i = 0; i < _point_count; ++i)
 	{
-		_points[i].X = myRandom(MARGIN, WINDOW_WIDTH-MARGIN);
-		_points[i].Y = myRandom(MARGIN, WINDOW_HEIGHT-MARGIN);
+	  vertex_init(&_points[i],
+		      myRandom(MARGIN, WINDOW_WIDTH-MARGIN),
+		      myRandom(MARGIN, WINDOW_HEIGHT-MARGIN));
 	}
 }
 
