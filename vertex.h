@@ -24,6 +24,7 @@
 #define VLINK_BACKWARD		0
 #define VLINK_FORWARD		1
 
+
 /*! Structure pour representer un point. */
 typedef struct _vertex
 {

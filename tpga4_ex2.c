@@ -1,18 +1,16 @@
 #include "tpga4_ex2.h"
 
-int_stack* _current_hull_stack = 0;
-
 void tpga4_ex2()
 {
-	_convex_hull = graham_convex_hull(_points, _point_count);
+	int idG = lexico_min(_points, _point_count);
+	//printf("idG = %d\n",idG);
+	_g = &_points[idG];
+	_convex_ordonnes = graham_convex_hull(_points, _point_count, idG);
 }
 
-
-int_list* graham_convex_hull(vertex* points, unsigned int point_count)
+/**état de départ: chaque points ont leurs voisins polaire à NULL*/
+vertex* graham_convex_hull(vertex* points, unsigned int point_count, const int idG)
 {
-	int idG = lexico_min(points, point_count);
-	//vertex G = points[idG];
-	
 	for(int i = 0;	i < point_count;	i++)
 	{
 		if( i < point_count -1)
@@ -24,17 +22,31 @@ int_list* graham_convex_hull(vertex* points, unsigned int point_count)
 	if(idG > 0)
 	{
 		v = &points[0];
-		points[idG-1].link[VLINK_POLAR][VLINK_FORWARD] = points[idG].link[VLINK_NATURAL][VLINK_FORWARD];	//inclu si &points[idG+1] -> NULL
+		points[idG-1].link[VLINK_POLAR][VLINK_FORWARD] = points[idG].link[VLINK_POLAR][VLINK_FORWARD];	//inclu si &points[idG+1] -> NULL
 	}
 	else
 		v = &points[1];
 	points[idG].link[VLINK_POLAR][VLINK_FORWARD] = NULL;
 	
-	
+	return triParFusion(v, point_count-1, VLINK_POLAR, &points[idG]);
 	
 	//fileDePrioritePolaire(points, point_count);
-	return 0;
 }
+
+
+
+
+
+
+
+/**********************************************************************/
+/**********************************************************************/
+/**********************************************************************/
+
+
+
+
+
 
 double calculPolaire(const vertex* origin, const vertex* dest)
 {
@@ -48,10 +60,6 @@ double calculPolaire(const vertex* origin, const vertex* dest)
 	return v.Y/r;//asin(v.Y/r);
 }
 
-void test(const int i)
-{
-	printf("test %d\n", i);
-}
 
 #define POS(k) points[fil[k]]
 /**points: tableau d'entrée contenant des vertexs dans un ordre aléatoire

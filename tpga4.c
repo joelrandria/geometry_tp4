@@ -1,9 +1,11 @@
 #include "tpga4.h"
 
 int _point_count = 0;
-vertex* _points = 0;
+vertex* _points = NULL;
 
-int_list* _convex_hull = 0;
+int_list* _convex_hull = NULL;
+vertex* _convex_ordonnes = NULL;
+vertex* _g = NULL;
 
 // Exercice sélectionné
 int _opt_selex = 0;
@@ -21,7 +23,7 @@ void create_random_points()
 	_points = malloc(sizeof(*_points) * _point_count);
 	for (i = 0; i < _point_count; ++i)
 	{
-	  vertex_init(&_points[i],
+		vertex_init(&_points[i],
 		      myRandom(MARGIN, WINDOW_WIDTH-MARGIN),
 		      myRandom(MARGIN, WINDOW_HEIGHT-MARGIN));
 	}
@@ -104,10 +106,14 @@ void draw()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	draw_points(_points, _point_count);
-	draw_hull(_points, _convex_hull);
-
+	switch(_opt_selex)
+	{
+		case 1: draw_hull(_points, _convex_hull);
+		case 2: draw_graham(_g, _convex_ordonnes);
+	}
 	glFlush();
 }
+
 void draw_points(const vertex* points, const unsigned int point_count)
 {
 	unsigned int i;
@@ -134,6 +140,24 @@ void draw_hull(const vertex* points, const int_list* hull_points)
 		glVertex2f(points[hull_point].X, points[hull_point].Y);
 		hull_points = hull_points->next;
 	}
+
+	glEnd();
+}
+
+#define drawVertex(v) glVertex2f( v->X, v->Y)
+
+void draw_graham(const vertex* g, const vertex* debList)
+{
+	const vertex *v = debList;
+	glBegin(GL_LINE_LOOP);
+		glColor3f(0, 1, 0);
+		drawVertex(g);
+		
+		while (v != NULL)
+		{
+			drawVertex(v);
+			v = v->link[VLINK_POLAR][VLINK_FORWARD];
+		}
 
 	glEnd();
 }

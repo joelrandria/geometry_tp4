@@ -16,6 +16,7 @@
 #include "vertex.h"
 #include "int_list.h"
 
+
 #define WINDOW_WIDTH 680
 #define WINDOW_HEIGHT 680
 
@@ -24,11 +25,15 @@ extern char *optarg;
 extern int opterr;
 
 // Variables globales communes initialisées au démarrage de l'application
-extern int _point_count;
-extern vertex* _points;
+extern int _point_count;	//nombre de points défini en paramêtre avec l'option "-n"
+extern vertex* _points;		//tableau de points de taille _point_count. les points sont définis aléatoirement.
 
 // Variables globales initialisées spécifiquement par les différents exercices
 extern int_list* _convex_hull;
+
+extern vertex* _convex_ordonnes;	//reconstruire _convex_hull à partir d'une liste chainée ordonnée est en O(n log(n))	log(n) étant la recherche de _points[i] == vertex de la chaine. 
+									//Autant donnée le premier vertex de la chaine (ou donnée un "int id" à chaque vertex égal au "i" de point[i]).
+extern vertex* _g;
 
 // Gestionnaires d'évènements
 void on_idle_event();
@@ -37,6 +42,7 @@ void on_idle_event();
 void draw();
 void draw_points(const vertex* points, const unsigned int point_count);
 void draw_hull(const vertex* points, const int_list* hull_points);
+void draw_graham(const vertex* g, const vertex* debList);
 
 
 #endif
