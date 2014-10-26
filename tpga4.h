@@ -33,7 +33,6 @@ extern int_list* _convex_hull;
 
 extern vertex* _convex_ordonnes;	//reconstruire _convex_hull à partir d'une liste chainée ordonnée est en O(n log(n))	log(n) étant la recherche de _points[i] == vertex de la chaine. 
 									//Autant donnée le premier vertex de la chaine (ou donnée un "int id" à chaque vertex égal au "i" de point[i]).
-extern vertex* _g;
 
 // Gestionnaires d'évènements
 void on_idle_event();
@@ -42,7 +41,7 @@ void on_idle_event();
 void draw();
 void draw_points(const vertex* points, const unsigned int point_count);
 void draw_hull(const vertex* points, const int_list* hull_points);
-void draw_graham(const vertex* g, const vertex* debList);
+void draw_graham(const vertex* debList);
 
 
 #endif

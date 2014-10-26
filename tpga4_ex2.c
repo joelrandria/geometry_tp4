@@ -3,33 +3,68 @@
 void tpga4_ex2()
 {
 	int idG = lexico_min(_points, _point_count);
+	//printf("%lf  %lf\n", _points[idG].X, _points[idG].Y);
 	//printf("idG = %d\n",idG);
-	_g = &_points[idG];
 	_convex_ordonnes = graham_convex_hull(_points, _point_count, idG);
 }
 
 /**état de départ: chaque points ont leurs voisins polaire à NULL*/
 vertex* graham_convex_hull(vertex* points, unsigned int point_count, const int idG)
 {
+	const int polar = VLINK_POLAR,	suiv = VLINK_FORWARD,	prec = VLINK_BACKWARD;
+	vertex* G = &points[idG];
 	for(int i = 0;	i < point_count;	i++)
 	{
 		if( i < point_count -1)
 		{
-			points[i].link[VLINK_POLAR][VLINK_FORWARD] = &points[i+1];
+			points[i].link[polar][suiv] = &points[i+1];
 		}
 	}
 	vertex* v;	//point de départ de la chaine simple;
 	if(idG > 0)
 	{
 		v = &points[0];
-		points[idG-1].link[VLINK_POLAR][VLINK_FORWARD] = points[idG].link[VLINK_POLAR][VLINK_FORWARD];	//inclu si &points[idG+1] -> NULL
+		points[idG-1].link[polar][suiv] = G->link[polar][suiv];	//inclu si &points[idG+1] -> NULL
 	}
 	else
 		v = &points[1];
-	points[idG].link[VLINK_POLAR][VLINK_FORWARD] = NULL;
+	G->link[polar][suiv] = NULL;
 	
-	return triParFusion(v, point_count-1, VLINK_POLAR, &points[idG]);
 	
+	vertex* listPolaire = triParFusion(v, point_count-1, polar, G);
+	
+	vertex* v2 = NULL;
+	//définir l'ordre polaire dans l'autre sens? simple mais en O(n).
+	/*v = listPolaire;
+	while(v != NULL)
+	{
+		v->link[polar][prec] = v2;
+		v2 = v;
+		v = v->link[polar][suiv];
+	}*/
+	
+	
+	const int convex = VLINK_CONVEX;
+	G->link[convex][suiv] = listPolaire;
+	
+	v = listPolaire;
+	v2 = v->link[polar][suiv];
+	while(v2 != NULL)
+	{
+		vertex* vMax = v2;
+		while(v2 != NULL)
+		{	
+			int orient = orientation(vMax, v, v2);
+			if(ORIENTATION_CCW == orient || ORIENTATION_INLINE == orient)
+				vMax = v2;
+			v2 = v2->link[polar][suiv];
+		}
+		v->link[convex][suiv] = vMax;
+		v = vMax;
+		v2 = v->link[polar][suiv];
+	}
+	
+	return G;
 	//fileDePrioritePolaire(points, point_count);
 }
 

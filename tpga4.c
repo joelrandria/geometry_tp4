@@ -5,7 +5,6 @@ vertex* _points = NULL;
 
 int_list* _convex_hull = NULL;
 vertex* _convex_ordonnes = NULL;
-vertex* _g = NULL;
 
 // Exercice sélectionné
 int _opt_selex = 0;
@@ -86,7 +85,13 @@ int main(int argc, char **argv)
 		case 2: tpga4_ex2(); break;
 	}
 
-	printf("calcul fini\n");
+	/*const vertex *v = _convex_ordonnes;
+	while (v != NULL)
+	{
+		printf("%lf  %lf\n", v->X, v->Y);
+		v = v->link[VLINK_CONVEX][VLINK_FORWARD];
+	}
+	printf("calcul fini\n");*/
 	
 	glutMainLoop();
 	
@@ -109,7 +114,7 @@ void draw()
 	switch(_opt_selex)
 	{
 		case 1: draw_hull(_points, _convex_hull);
-		case 2: draw_graham(_g, _convex_ordonnes);
+		case 2: draw_graham(_convex_ordonnes);
 	}
 	glFlush();
 }
@@ -146,17 +151,15 @@ void draw_hull(const vertex* points, const int_list* hull_points)
 
 #define drawVertex(v) glVertex2f( v->X, v->Y)
 
-void draw_graham(const vertex* g, const vertex* debList)
+void draw_graham(const vertex* debList)
 {
 	const vertex *v = debList;
 	glBegin(GL_LINE_LOOP);
 		glColor3f(0, 1, 0);
-		drawVertex(g);
-		
 		while (v != NULL)
 		{
 			drawVertex(v);
-			v = v->link[VLINK_POLAR][VLINK_FORWARD];
+			v = v->link[VLINK_CONVEX][VLINK_FORWARD];
 		}
 
 	glEnd();

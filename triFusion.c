@@ -63,12 +63,8 @@ vertex* triParFusion(vertex* debList, const int nb, const int type, const void* 
 	for(int i = 0;	i < moitie;	i++)
 		v = v->link[type][VLINK_FORWARD];
 	
-	vertex* liste = fusion(
-							triParFusion(debList, moitie, type, arg),
-							triParFusion(v, nb/2, type, arg),
-							type, arg);
-	
-	
-	//définir l'ordre polaire dans l'autre sens? simple mais en O(n).
-	return liste;
+	return fusion(
+					triParFusion(debList, moitie, type, arg),
+					triParFusion(v, nb/2, type, arg),
+					type, arg);
 }
