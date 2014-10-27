@@ -40,8 +40,9 @@ void on_idle_event();
 // Fonctions d'affichage
 void draw();
 void draw_points(const vertex* points, const unsigned int point_count);
-void draw_hull(const vertex* points, const int_list* hull_points);
-void draw_graham(const vertex* debList);
+
+void draw_jarvis(const vertex* points, const unsigned int point_count, const int_list* hull_points);
+void draw_graham(const vertex* points, const unsigned int point_count, const vertex* debList);
 
 
 #endif

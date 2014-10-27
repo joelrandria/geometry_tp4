@@ -98,9 +98,9 @@ int main(int argc, char **argv)
 		v = v->link[VLINK_CONVEX][VLINK_FORWARD];
 	}
 	printf("calcul fini\n");*/
-	
+
 	glutMainLoop();
-	
+
 	free(_points);
 
 	return EXIT_SUCCESS;
@@ -116,51 +116,55 @@ void draw()
   glColor3f(0, 0, 0);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  draw_points(_points, _point_count);
   switch(_opt_selex)
   {
   case 1:
 
-    draw_hull(_points, _convex_hull);
+    draw_jarvis(_points, _point_count, _convex_hull);
     break;
 
   case 2:
 
-    draw_graham(_convex_ordonnes);
+    draw_graham(_points, _point_count, _convex_ordonnes);
     break;
 
   case 4:
 
-    draw_hull(_points, _convex_hull);
-    draw_graham(_convex_ordonnes);
+    draw_jarvis(_points, _point_count, _convex_hull);
+    draw_graham(_points, _point_count, _convex_ordonnes);
     break;
   }
 
   glFlush();
 }
-
 void draw_points(const vertex* points, const unsigned int point_count)
 {
-	unsigned int i;
+  unsigned int i;
 
-	glPointSize(2);
-	glBegin(GL_POINTS);
-	glColor3f(1, 1, 1);
+  glBegin(GL_POINTS);
 
-	for (i = 0; i < _point_count; ++i)
-		glVertex2f(_points[i].X, _points[i].Y);
+  glColor3f(1, 1, 1);
+  glPointSize(2);
 
-	glEnd();
+  for (i = 0; i < _point_count; ++i)
+    glVertex2f(_points[i].X, _points[i].Y);
+
+  glEnd();
 }
-void draw_hull(const vertex* points, const int_list* hull_points)
+
+void draw_jarvis(const vertex* points, const unsigned int point_count, const int_list* hull_points)
 {
   int hull_point;
 
   glViewport(0, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
+  // Rendu des points
+  draw_points(points, point_count);
+
+  // Rendu de l'enveloppe convexe
   glBegin(GL_LINE_LOOP);
 
-  glColor3f(0, 1, 0);
+  glColor3f(1, 0, 0);
 
   while (hull_points)
   {
@@ -174,12 +178,16 @@ void draw_hull(const vertex* points, const int_list* hull_points)
 
 #define drawVertex(v) glVertex2f( v->X, v->Y)
 
-void draw_graham(const vertex* debList)
+void draw_graham(const vertex* points, const unsigned int point_count, const vertex* debList)
 {
   const vertex *v = debList;
 
   glViewport(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
+  // Rendu des points
+  draw_points(points, point_count);
+
+  // Rendu de l'enveloppe convexe
   glBegin(GL_LINE_LOOP);
 
   glColor3f(0, 1, 0);
