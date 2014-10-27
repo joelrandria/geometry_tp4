@@ -17,8 +17,8 @@
 #include "int_list.h"
 
 
-#define WINDOW_WIDTH 680
-#define WINDOW_HEIGHT 680
+#define WINDOW_WIDTH 768
+#define WINDOW_HEIGHT 768
 
 // Accès aux options de la ligne de commandes
 extern char *optarg;

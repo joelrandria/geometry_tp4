@@ -23,8 +23,8 @@ void create_random_points()
 	for (i = 0; i < _point_count; ++i)
 	{
 		vertex_init(&_points[i],
-		      myRandom(MARGIN, WINDOW_WIDTH-MARGIN),
-		      myRandom(MARGIN, WINDOW_HEIGHT-MARGIN));
+			    myRandom(MARGIN, WINDOW_WIDTH-MARGIN),
+			    myRandom(MARGIN, WINDOW_HEIGHT-MARGIN));
 	}
 }
 
@@ -35,7 +35,7 @@ void winInit()
 
 void usage()
 {
-	printf("Usage: ./tpga4 -n count -m{1}\r\n");
+	printf("Usage: ./tpga4 -n count -m{1|2|3|4}\r\n");
 }
 
 int main(int argc, char **argv)
@@ -83,6 +83,12 @@ int main(int argc, char **argv)
 	{
 		case 1: tpga4_ex1(); break;
 		case 2: tpga4_ex2(); break;
+
+	        case 4:
+
+		  tpga4_ex1();
+		  tpga4_ex2();
+		  break;
 	}
 
 	/*const vertex *v = _convex_ordonnes;
@@ -107,16 +113,30 @@ void on_idle_event()
 
 void draw()
 {
-	glColor3f(0, 0, 0);
-	glClear(GL_COLOR_BUFFER_BIT);
+  glColor3f(0, 0, 0);
+  glClear(GL_COLOR_BUFFER_BIT);
 
-	draw_points(_points, _point_count);
-	switch(_opt_selex)
-	{
-		case 1: draw_hull(_points, _convex_hull);
-		case 2: draw_graham(_convex_ordonnes);
-	}
-	glFlush();
+  draw_points(_points, _point_count);
+  switch(_opt_selex)
+  {
+  case 1:
+
+    draw_hull(_points, _convex_hull);
+    break;
+
+  case 2:
+
+    draw_graham(_convex_ordonnes);
+    break;
+
+  case 4:
+
+    draw_hull(_points, _convex_hull);
+    draw_graham(_convex_ordonnes);
+    break;
+  }
+
+  glFlush();
 }
 
 void draw_points(const vertex* points, const unsigned int point_count)
@@ -134,33 +154,41 @@ void draw_points(const vertex* points, const unsigned int point_count)
 }
 void draw_hull(const vertex* points, const int_list* hull_points)
 {
-	int hull_point;
+  int hull_point;
 
-	glBegin(GL_LINE_LOOP);
-	glColor3f(0, 1, 0);
+  glViewport(0, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
-	while (hull_points)
-	{
-		hull_point = hull_points->value;
-		glVertex2f(points[hull_point].X, points[hull_point].Y);
-		hull_points = hull_points->next;
-	}
+  glBegin(GL_LINE_LOOP);
 
-	glEnd();
+  glColor3f(0, 1, 0);
+
+  while (hull_points)
+  {
+    hull_point = hull_points->value;
+    glVertex2f(points[hull_point].X, points[hull_point].Y);
+    hull_points = hull_points->next;
+  }
+
+  glEnd();
 }
 
 #define drawVertex(v) glVertex2f( v->X, v->Y)
 
 void draw_graham(const vertex* debList)
 {
-	const vertex *v = debList;
-	glBegin(GL_LINE_LOOP);
-		glColor3f(0, 1, 0);
-		while (v != NULL)
-		{
-			drawVertex(v);
-			v = v->link[VLINK_CONVEX][VLINK_FORWARD];
-		}
+  const vertex *v = debList;
 
-	glEnd();
+  glViewport(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+
+  glBegin(GL_LINE_LOOP);
+
+  glColor3f(0, 1, 0);
+
+  while (v != NULL)
+  {
+    drawVertex(v);
+    v = v->link[VLINK_CONVEX][VLINK_FORWARD];
+  }
+
+  glEnd();
 }
