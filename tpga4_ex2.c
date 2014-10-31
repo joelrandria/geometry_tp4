@@ -2,15 +2,13 @@
 
 void tpga4_ex2()
 {
-	int idG = lexico_min(_points_ex2, _point_count);
-	//printf("%lf  %lf\n", _points_ex2[idG].X, _points_ex2[idG].Y);
-	//printf("idG = %d\n",idG);
-	_convex_ordonnes_ex2 = graham_convex_hull(_points_ex2, _point_count, idG);
+	_convex_ordonnes_ex2 = graham_convex_hull(_points_ex2, _point_count);
 }
 
 /**état de départ: chaque points ont leurs voisins polaire à NULL*/
-vertex* graham_convex_hull(vertex* points, unsigned int point_count, const int idG)
+vertex* graham_convex_hull(vertex* points, unsigned int point_count)
 {
+	int idG = lexico_min(points, point_count);
 	const int polar = VLINK_POLAR,	suiv = VLINK_FORWARD,	prec = VLINK_BACKWARD;
 	vertex* G = &points[idG];
 	for(int i = 0;	i < point_count;	i++)
@@ -79,7 +77,7 @@ vertex* graham_convex_hull(vertex* points, unsigned int point_count, const int i
 /**********************************************************************/
 
 
-
+//fonction qui ne sera finalement pas utilisées
 
 
 

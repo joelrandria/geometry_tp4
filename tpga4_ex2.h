@@ -9,7 +9,7 @@
 void tpga4_ex2();
 
 // Enveloppe convexe: Algorithme de Graham (Graham Scan)
-vertex* graham_convex_hull(vertex* points, unsigned int point_count, int idG);
+vertex* graham_convex_hull(vertex* points, unsigned int point_count);
 //int* fileDePrioritePolaire(const vertex points[], const uint taille);
 
 #endif

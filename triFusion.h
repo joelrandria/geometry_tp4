@@ -10,5 +10,6 @@ vertex* quiGagne(vertex* v1, vertex* v2, const int type, const void* arg);
 vertex* fusion(vertex* list1, vertex* list2, const int type, const void* arg);
 
 vertex* triParFusion(vertex* debList, const int nb, const int type, const void* arg);
+vertex* triParFusionDouble(vertex* debList, const int nb, const int type, const void* arg),;
 
 #endif

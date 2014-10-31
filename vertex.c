@@ -23,6 +23,7 @@ vertex* vertex_create(double x, double y)
   return v;
 }
 
+/**état initial: le tableau de vertex de taille "count" ne contient que des linkages vers NULL*/
 vertex* vertex_copy(vertex* tab, int count)
 {
   int i;
