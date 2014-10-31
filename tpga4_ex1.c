@@ -1,9 +1,8 @@
 #include "tpga4_ex1.h"
 
-
 void tpga4_ex1()
 {
-  _convex_hull = jarvis_convex_hull(_points, _point_count);
+  _convex_hull = jarvis_convex_hull(_points_ex1, _point_count);
 }
 
 

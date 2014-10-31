@@ -2,10 +2,10 @@
 
 void tpga4_ex2()
 {
-	int idG = lexico_min(_points, _point_count);
-	//printf("%lf  %lf\n", _points[idG].X, _points[idG].Y);
+	int idG = lexico_min(_points_ex2, _point_count);
+	//printf("%lf  %lf\n", _points_ex2[idG].X, _points_ex2[idG].Y);
 	//printf("idG = %d\n",idG);
-	_convex_ordonnes = graham_convex_hull(_points, _point_count, idG);
+	_convex_ordonnes_ex2 = graham_convex_hull(_points_ex2, _point_count, idG);
 }
 
 /**état de départ: chaque points ont leurs voisins polaire à NULL*/

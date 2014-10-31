@@ -36,6 +36,8 @@ typedef struct _vertex
 void vertex_init(vertex* v, double x, double y);
 vertex* vertex_create(double x, double y);
 
+vertex* vertex_copy(vertex* tab, int count);
+
 void vertex_insert(vertex* ref, vertex* nouv, int link, int direction);
 
 double vertex_distance(const vertex* v1, const vertex* v2);

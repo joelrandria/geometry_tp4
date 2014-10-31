@@ -1,13 +1,20 @@
 #include "tpga4.h"
 
 int _point_count = 0;
-vertex* _points = NULL;
+
+vertex* _points_ex1 = NULL;
+vertex* _points_ex2 = NULL;
+vertex* _points_ex3 = NULL;
+vertex* _points_ex4 = NULL;
 
 int_list* _convex_hull = NULL;
-vertex* _convex_ordonnes = NULL;
+
+vertex* _convex_ordonnes_ex2 = NULL;
+vertex* _convex_ordonnes_ex3 = NULL;
+vertex* _convex_ordonnes_ex4 = NULL;
 
 // Exercice sélectionné
-int _opt_selex = 0;
+char _opt_selex = 0;
 
 double myRandom(double a, double b)
 {
@@ -17,15 +24,20 @@ double myRandom(double a, double b)
 #define MARGIN 20
 void create_random_points()
 {
-	int i;
+  int i;
 
-	_points = malloc(sizeof(*_points) * _point_count);
-	for (i = 0; i < _point_count; ++i)
-	{
-		vertex_init(&_points[i],
-			    myRandom(MARGIN, WINDOW_WIDTH-MARGIN),
-			    myRandom(MARGIN, WINDOW_HEIGHT-MARGIN));
-	}
+  _points_ex1 = malloc(sizeof(*_points_ex1) * _point_count);
+
+  for (i = 0; i < _point_count; ++i)
+  {
+    vertex_init(&_points_ex1[i],
+		myRandom(MARGIN, WINDOW_WIDTH-MARGIN),
+		myRandom(MARGIN, WINDOW_HEIGHT-MARGIN));
+  }
+
+  _points_ex2 = vertex_copy(_points_ex1, _point_count);
+  _points_ex3 = vertex_copy(_points_ex1, _point_count);
+  _points_ex4 = vertex_copy(_points_ex1, _point_count);
 }
 
 void winInit()
@@ -53,9 +65,9 @@ int main(int argc, char **argv)
 				break;
 
 			case 'm':
-				if ((sscanf(optarg, "%d", &_opt_selex) != 1) || _opt_selex <= 0)
-					_opt_selex = 1;
-				break;
+
+			  sscanf(optarg, "%c", &_opt_selex);
+			  break;
 
 			default: usage(); break;
 		}
@@ -81,27 +93,22 @@ int main(int argc, char **argv)
 
 	switch (_opt_selex)
 	{
-		case 1: tpga4_ex1(); break;
-		case 2: tpga4_ex2(); break;
+		case '1': tpga4_ex1(); break;
+		case '2': tpga4_ex2(); break;
 
-	        case 4:
+	        case 'a':
 
 		  tpga4_ex1();
 		  tpga4_ex2();
 		  break;
 	}
 
-	/*const vertex *v = _convex_ordonnes;
-	while (v != NULL)
-	{
-		printf("%lf  %lf\n", v->X, v->Y);
-		v = v->link[VLINK_CONVEX][VLINK_FORWARD];
-	}
-	printf("calcul fini\n");*/
-
 	glutMainLoop();
 
-	free(_points);
+	free(_points_ex1);
+	free(_points_ex2);
+	free(_points_ex3);
+	free(_points_ex4);
 
 	return EXIT_SUCCESS;
 }
@@ -118,20 +125,20 @@ void draw()
 
   switch(_opt_selex)
   {
-  case 1:
+  case '1':
 
-    draw_jarvis(_points, _point_count, _convex_hull);
+    draw_jarvis(_points_ex1, _point_count, _convex_hull);
     break;
 
-  case 2:
+  case '2':
 
-    draw_graham(_points, _point_count, _convex_ordonnes);
+    draw_graham(_points_ex2, _point_count, _convex_ordonnes_ex2);
     break;
 
-  case 4:
+  case 'a':
 
-    draw_jarvis(_points, _point_count, _convex_hull);
-    draw_graham(_points, _point_count, _convex_ordonnes);
+    draw_jarvis(_points_ex1, _point_count, _convex_hull);
+    draw_graham(_points_ex2, _point_count, _convex_ordonnes_ex2);
     break;
   }
 
@@ -147,7 +154,7 @@ void draw_points(const vertex* points, const unsigned int point_count)
   glPointSize(2);
 
   for (i = 0; i < _point_count; ++i)
-    glVertex2f(_points[i].X, _points[i].Y);
+    glVertex2f(points[i].X, points[i].Y);
 
   glEnd();
 }

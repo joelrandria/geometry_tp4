@@ -23,6 +23,19 @@ vertex* vertex_create(double x, double y)
   return v;
 }
 
+vertex* vertex_copy(vertex* tab, int count)
+{
+  int i;
+  vertex* copies;
+
+  copies = malloc(sizeof(*copies) * count);
+
+  for (i = 0; i < count; ++i)
+    copies[i] = tab[i];
+
+  return copies;
+}
+
 double vertex_distance(const vertex* v1, const vertex* v2)
 {
   return hypot(v2->Y - v1->Y, v2->X - v1->X);
