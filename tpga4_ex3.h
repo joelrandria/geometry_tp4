@@ -3,7 +3,6 @@
 
 #include "tpga4.h"
 #include "vertex.h"
-#include "triFusion.h"
 
 // Exécution de l'exercice 3
 void tpga4_ex3();

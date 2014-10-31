@@ -32,19 +32,27 @@ typedef struct _vertex
   struct _vertex* link[VLINK_TYPE_COUNT][VLINK_DIRECTION_COUNT];
 } vertex;
 
+// Allocation / Initialisation / Copie
 void vertex_init(vertex* v, double x, double y);
 vertex* vertex_create(double x, double y);
-
 vertex* vertex_copy(vertex* tab, int count);
 
-void vertex_insert(vertex* ref, vertex* nouv, int link, int direction);
+// Affichage
+void vertex_print_all(vertex* v, int vlink, int vdirection);
 
+// Relations
+vertex* vertex_at(vertex* v, int position, int vlink, int direction);
+vertex* vertex_insert(vertex* ref, vertex* nouv, int link, int direction);
+
+// Distances
 double vertex_distance(const vertex* v1, const vertex* v2);
 double square_distance_eucl(const vertex* a, const vertex* b);
 
+// Relation d'ordre lexicographique
 int lexico_cmp(const vertex* a, const vertex* b);
 int lexico_min(const vertex* points, const unsigned int point_count);
 
+// Relation d'ordre polaire
 int orientation(const vertex* a, const vertex* b, const vertex* c);
 int local_polar_min(const vertex* points, const unsigned int point_count, int point);
 

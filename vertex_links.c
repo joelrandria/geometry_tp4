@@ -1,24 +1,52 @@
 #include "vertex.h"
 
+#include <stdio.h>
+
+vertex* vertex_at(vertex* v, int position, int vlink, int direction)
+{
+  while (position-- > 0)
+    v = v->link[vlink][direction];
+
+  return v;
+}
 vertex* vertex_insert(vertex* ref, vertex* nouv, int link, const int direction)
 {
-	vertex* temp = NULL;
-	temp = ref->link[link][direction];
+  vertex* temp = NULL;
+  temp = ref->link[link][direction];
 
-	ref->link[link][direction] = nouv;
-	
-	nouv->link[link][direction] = temp;
-	nouv->link[link][!direction] = ref;
-	
-	if(temp != NULL)
-		temp->link[link][!direction] = nouv;
-	
-	return nouv;
+  ref->link[link][direction] = nouv;
+
+  nouv->link[link][direction] = temp;
+  nouv->link[link][!direction] = ref;
+
+  if(temp != NULL)
+    temp->link[link][!direction] = nouv;
+
+  return nouv;
 }
 vertex* vertex_insert_before(vertex* ref, vertex* nouv, int link)
-{	return vertex_insert(ref, nouv, link, VLINK_BACKWARD);	}
+{
+  return vertex_insert(ref, nouv, link, VLINK_BACKWARD);
+}
 vertex* vertex_insert_after(vertex* ref, vertex* nouv, int link)
-{	return vertex_insert(ref, nouv, link, VLINK_FORWARD);	}
+{
+  return vertex_insert(ref, nouv, link, VLINK_FORWARD);
+}
+void vertex_print_all(vertex* v, int vlink, int vdirection)
+{
+  vertex* beginning;
+
+  beginning = v;
+
+  while (v != 0)
+  {
+    printf("<%f, %f>\r\n", v->X, v->Y);
+
+    v = v->link[vlink][vdirection];
+    if (v == beginning)
+      break;
+  }
+}
 
 vertex* vertex_def(vertex* nouv, int link, vertex* gauche, vertex* droite)
 {
@@ -49,9 +77,13 @@ vertex* vertex_ajoutNaturel(vertex* ref, vertex* nouv, int direction)
 	return nouv;
 }
 vertex* vertex_ajoutNaturelFirst(vertex* ref, vertex* nouv)
-{	return ajoutNaturel(ref, VLINK_NATURAL, VLINK_BACKWARD);	}
+{
+  return vertex_ajoutNaturel(ref, VLINK_NATURAL, VLINK_BACKWARD);
+}
 vertex* vertex_ajoutNaturelLast(vertex* ref, vertex* nouv)
-{	return ajoutNaturel(ref, VLINK_NATURAL, VLINK_FORWARD);	}
+{
+  return vertex_ajoutNaturel(ref, VLINK_NATURAL, VLINK_FORWARD);
+}
 
 vertex* vertex_ajoutLexico(vertex* ref, vertex* nouv)
 {
@@ -84,7 +116,6 @@ vertex* vertex_ajoutLexico(vertex* ref, vertex* nouv)
 	else 	//0
 		return vertex_insert_after(ref, nouv, VLINK_LEXICO);
 }
-
 
 #define POS(k) tab[fil[k]]
 /**tab: tableau d'entrée contenant des vertexs dans un ordre aléatoire
@@ -140,14 +171,4 @@ int* fileDePrioriteLexico(const vertex tab[], const int taille)
 	
 	free(fil);
 	return retour;
-}
-
-void raffraichiLexico(vertex tab[], const int taille)
-{
-	int* fdp = fileDePrioriteLexico(tab, taille);
-	for(int i = 0;	i < taille;	i++)
-	{
-		tab[fdp[i]].link[VLINK_LEXICO][VLINK_BACKWARD] = (i == 0 ? NULL : tab[fdp[i-1]]);
-		tab[fdp[i]].link[VLINK_LEXICO][VLINK_FORWARD] = (i == taille-1 ? NULL : tab[fdp[i+1]]);
-	}
 }

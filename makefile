@@ -23,16 +23,29 @@ job: tpga4 #dox
 	#one -c4 && two -n100 && $(BROWSER) DOX/html/index.html &
 	#tpga4 -2 && tpga4 -3 && tpga4 -4 && tpga4 -5 && $(BROWSER) DOX/html/index.html &
 
-tpga4: 	tpga4.o \
-	tpga4_ex1.o \
-	vertex.o \
+tpga4: 	vertex.o \
+	vertex_links.o \
+	vertex_fusion_sorting.o \
 	int_list.o \
-	tpga4_ex2.o \
 	int_stack.o \
 	triFusion.o \
+	tpga4.o \
+	tpga4_ex1.o \
+	tpga4_ex2.o \
 	tpga4_ex3.o
 
-	$(CC) $(GL_LIBDIR) tpga4.o tpga4_ex1.o vertex.o int_list.o tpga4_ex2.o int_stack.o triFusion.o tpga4_ex3.o $(GL_LIBRARIES) -o $@
+	$(CC) $(GL_LIBDIR) \
+		vertex.o \
+		vertex_links.o \
+		vertex_fusion_sorting.o \
+		int_list.o \
+		int_stack.o \
+		triFusion.o \
+		tpga4.o \
+		tpga4_ex1.o \
+		tpga4_ex2.o \
+		tpga4_ex3.o \
+	$(GL_LIBRARIES) -o $@
 
 tpga4.o: tpga4.c tpga4.h
 	$(CC) $(GL_INCLUDE) $(CFLAGS) $<
