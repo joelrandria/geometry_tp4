@@ -22,13 +22,7 @@ vertex* lexico_convex_hull(vertex* points, unsigned int point_count)
 {
   vertex* min_lexico;
 
-  printf("lexico_convex_hull()\r\n");
-
-  min_lexico = vertex_fusion_sort(points, _point_count, VLINK_LEXICO, vertex_lexico_cmp, 0);
-
-  printf("----- APRÈS TRI -----\r\n");
-  vertex_print_all(min_lexico, VLINK_LEXICO, VLINK_FORWARD);
-  printf("---------------------\r\n");
+  min_lexico = vertex_fusion_sort(points, point_count, VLINK_LEXICO, vertex_lexico_cmp, 0);
 
   return 0;
 }

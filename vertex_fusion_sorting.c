@@ -26,7 +26,7 @@ vertex* vertex_fusion(vertex* left, vertex* right, int vlink, compare_func cmp, 
   fusion.link[vlink][VLINK_FORWARD] = 0;
   scan = &fusion;
 
-  while (left->link[vlink][VLINK_FORWARD] != 0 && right->link[vlink][VLINK_FORWARD] != 0)
+  while (left != 0 && right != 0)
   {
     if (cmp(left, right, args) < 0)
     {
@@ -54,13 +54,11 @@ vertex* vertex_fusion_sort_(vertex* first, int count, int vlink, compare_func cm
   vertex* left;
   vertex* right;
   vertex* median;
-  int median_index;
 
   if (count < 2)
     return first;
 
-  median_index = (count / 2) - 1;
-  median = vertex_at(first, median_index, vlink, VLINK_FORWARD);
+  median = vertex_at(first, (count / 2) - 1, vlink, VLINK_FORWARD);
 
   left = first;
   right = median->link[vlink][VLINK_FORWARD];
@@ -76,13 +74,7 @@ vertex* vertex_fusion_sort_(vertex* first, int count, int vlink, compare_func cm
 }
 vertex* vertex_fusion_sort(vertex* vertices, int count, int vlink, compare_func cmp, void *args)
 {
-  printf("vertex_fusion_sort()\r\n");
-
   vertex_chaining(vertices, count, vlink, VLINK_FORWARD);
-
-  printf("----- AVANT TRI -----\r\n");
-  vertex_print_all(vertices, vlink, VLINK_FORWARD);
-  printf("---------------------\r\n");
 
   vertices = vertex_fusion_sort_(vertices, count, vlink, cmp, args);
 
