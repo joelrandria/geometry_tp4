@@ -33,8 +33,7 @@ extern vertex* _points_ex3;	// copies des vertices pour l'exercice 3 (Insertion 
 extern vertex* _points_ex4;	// copies des vertices pour l'exercice 4 (Divide & Conquer)
 
 // Variables globales initialisées spécifiquement par les différents exercices
-extern int_list* _convex_hull;
-
+extern int_list* _convex_hull;			// enveloppe convexe générée par l'exercice 1
 extern vertex* _convex_ordonnes_ex2;	// enveloppe convexe générée par l'exercice 2
 extern vertex* _convex_ordonnes_ex3;	// enveloppe convexe générée par l'exercice 3
 extern vertex* _convex_ordonnes_ex4;	// enveloppe convexe générée par l'exercice 4
