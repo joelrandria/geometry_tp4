@@ -2,6 +2,7 @@
 #include "tpga4_ex1.h"
 #include "tpga4_ex2.h"
 #include "tpga4_ex3.h"
+#include "tpga4_ex4.h"
 
 int _point_count = 0;
 
@@ -58,6 +59,9 @@ int main(int argc, char **argv)
 	int c;
 
 	opterr = 0;
+	_point_count = 50;
+	_opt_selex = 'a';
+	
 	while ((c = getopt(argc, argv, "n:m:")) != EOF)
 	{
 		switch (c)
@@ -99,12 +103,13 @@ int main(int argc, char **argv)
 		case '1': tpga4_ex1(); break;
 		case '2': tpga4_ex2(); break;
 		case '3': tpga4_ex3(); break;
-
+		case '4': tpga4_ex4(); break;
 	        case 'a':
 
 		  tpga4_ex1();
 		  tpga4_ex2();
 		  tpga4_ex3();
+		  tpga4_ex4();
 
 		  break;
 	}
@@ -129,10 +134,11 @@ void draw()
   glColor3f(0, 0, 0);
   glClear(GL_COLOR_BUFFER_BIT);
 
+	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+  glColor3f(0, 1, 0);
   switch(_opt_selex)
   {
   case '1':
-
     draw_jarvis(_points_ex1, _point_count, _convex_hull);
     break;
 
@@ -147,12 +153,28 @@ void draw()
     break;
 
   case 'a':
-
+	glEnd();
+	glViewport(0, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
     draw_jarvis(_points_ex1, _point_count, _convex_hull);
+    //glEnd();
+    
+	glColor3f(1, 0, 0);
+    glViewport(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+    draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2);
+    //glEnd();
+    
+    glColor3f(0, 0, 1);
+    glViewport(0, 0, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+    draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2);
+    //glEnd();
+    
+    glColor3f(1, 1, 0);
+    glViewport(WINDOW_WIDTH / 2, 0, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
     draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2);
     break;
   }
-
+	
+  //glEnd();
   glFlush();
 }
 void draw_points(const vertex* points, const unsigned int point_count)
@@ -174,15 +196,13 @@ void draw_jarvis(const vertex* points, const unsigned int point_count, const int
 {
   int hull_point;
 
-  glViewport(0, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+  //glViewport(0, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
-  // Rendu des points
-  draw_points(points, point_count);
 
   // Rendu de l'enveloppe convexe
   glBegin(GL_LINE_LOOP);
 
-  glColor3f(1, 0, 0);
+  //glColor3f(1, 0, 0);
 
   while (hull_points)
   {
@@ -190,31 +210,30 @@ void draw_jarvis(const vertex* points, const unsigned int point_count, const int
     glVertex2f(points[hull_point].X, points[hull_point].Y);
     hull_points = hull_points->next;
   }
-
   glEnd();
+  
+  // Rendu des points
+  draw_points(points, point_count);
 }
+
 
 #define drawVertex(v) glVertex2f( v->X, v->Y)
 
 void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* debList)
 {
   const vertex *v = debList;
-
-  glViewport(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-
-  // Rendu des points
-  draw_points(points, point_count);
-
+	
   // Rendu de l'enveloppe convexe
   glBegin(GL_LINE_LOOP);
-
-  glColor3f(0, 1, 0);
 
   while (v != NULL)
   {
     drawVertex(v);
     v = v->link[VLINK_CONVEX][VLINK_FORWARD];
   }
-
   glEnd();
+  
+  // Rendu des points
+  draw_points(points, point_count);
+
 }

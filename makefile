@@ -32,7 +32,8 @@ tpga4: 	vertex.o \
 	tpga4.o \
 	tpga4_ex1.o \
 	tpga4_ex2.o \
-	tpga4_ex3.o
+	tpga4_ex3.o \
+	tpga4_ex4.o
 
 	$(CC) $(GL_LIBDIR) \
 		vertex.o \
@@ -45,6 +46,7 @@ tpga4: 	vertex.o \
 		tpga4_ex1.o \
 		tpga4_ex2.o \
 		tpga4_ex3.o \
+		tpga4_ex4.o \
 	$(GL_LIBRARIES) -o $@
 
 tpga4.o: tpga4.c tpga4.h
