@@ -9,13 +9,8 @@
 #include <GL/glut.h>
 #include <string.h>
 
-#include "tpga4_ex1.h"
-#include "tpga4_ex2.h"
-
-
 #include "vertex.h"
 #include "int_list.h"
-
 
 #define WINDOW_WIDTH 768
 #define WINDOW_HEIGHT 768
@@ -46,7 +41,7 @@ void draw();
 void draw_points(const vertex* points, const unsigned int point_count);
 
 void draw_jarvis(const vertex* points, const unsigned int point_count, const int_list* hull_points);
-void draw_graham(const vertex* points, const unsigned int point_count, const vertex* debList);
 
+void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* debList);
 
 #endif
