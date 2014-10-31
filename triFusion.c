@@ -73,9 +73,8 @@ vertex* triParFusion(vertex* debList, const int nb, const int type, const void* 
 					type, arg);
 }
 
-vertex* triParFusionDouble(vertex* debList, const int nb, const int type, const void* arg)
+vertex* chainageArriere(vertex* debList, const int type)
 {
-	vertex* debList = triParFusion(debList, nb, type, arg);
 	vertex* v = debList, *v2 = NULL;
 	while(v != NULL)
 	{
@@ -86,3 +85,11 @@ vertex* triParFusionDouble(vertex* debList, const int nb, const int type, const 
 	
 	return debList;
 }
+
+vertex* triParFusionDouble(vertex* debList, const int nb, const int type, const void* arg)
+{
+	vertex* v = triParFusion(debList, nb, type, arg);
+	return chainageArriere(v, type); 
+}
+
+
