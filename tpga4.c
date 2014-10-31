@@ -1,4 +1,7 @@
 #include "tpga4.h"
+#include "tpga4_ex1.h"
+#include "tpga4_ex2.h"
+#include "tpga4_ex3.h"
 
 int _point_count = 0;
 
@@ -95,11 +98,14 @@ int main(int argc, char **argv)
 	{
 		case '1': tpga4_ex1(); break;
 		case '2': tpga4_ex2(); break;
+		case '3': tpga4_ex3(); break;
 
 	        case 'a':
 
 		  tpga4_ex1();
 		  tpga4_ex2();
+		  tpga4_ex3();
+
 		  break;
 	}
 
@@ -132,13 +138,18 @@ void draw()
 
   case '2':
 
-    draw_graham(_points_ex2, _point_count, _convex_ordonnes_ex2);
+    draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2);
+    break;
+
+  case '3':
+
+    draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2);
     break;
 
   case 'a':
 
     draw_jarvis(_points_ex1, _point_count, _convex_hull);
-    draw_graham(_points_ex2, _point_count, _convex_ordonnes_ex2);
+    draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2);
     break;
   }
 
@@ -185,7 +196,7 @@ void draw_jarvis(const vertex* points, const unsigned int point_count, const int
 
 #define drawVertex(v) glVertex2f( v->X, v->Y)
 
-void draw_graham(const vertex* points, const unsigned int point_count, const vertex* debList)
+void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* debList)
 {
   const vertex *v = debList;
 

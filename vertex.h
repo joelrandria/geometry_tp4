@@ -17,14 +17,13 @@
 // Liens inter vertices
 #define VLINK_TYPE_COUNT	4
 #define VLINK_NATURAL		0
-#define VLINK_POLAR			1
+#define VLINK_POLAR		1
 #define VLINK_LEXICO		2
 #define VLINK_CONVEX		3
 
 #define VLINK_DIRECTION_COUNT	2
 #define VLINK_BACKWARD		0
 #define VLINK_FORWARD		1
-
 
 /*! Structure pour representer un point. */
 typedef struct _vertex
