@@ -12,13 +12,8 @@ vertex* fusionEnv(vertex* list1, vertex* list2)
 	const int lexico = VLINK_LEXICO,	convex = VLINK_CONVEX,	prec = VLINK_BACKWARD,	suiv = VLINK_FORWARD;
 	vertex* gg = list1, *dg = list2;
 	vertex* gd = gg, *g, *d, *g2, *d2;
-	int i = 1;
 	while(gd->link[lexico][suiv] != NULL)
-	{
 		gd = gd->link[lexico][suiv];
-		i++;
-	}
-	printf("nb list1 : %d\n\n",i);
 		
 	//on réassocie les deux couples
 	gd->link[lexico][suiv] = dg;
@@ -32,22 +27,15 @@ vertex* fusionEnv(vertex* list1, vertex* list2)
 	
 	while((d != d2 && orientPolaire(g, d, d2) <= M_PI) || (g != g2 && orientPolaire(d, g, g2) >= M_PI))
 	{
-		test(51);
 		while(d != d2 && orientPolaire(g, d, d2) <= M_PI)
 		{
-			test(52);
-			printf(" x : %lf, y : %lf,  angle : %lf\n", d->X, d->Y, orientPolaire(g, d, d2)); 
 			d = d2;
 			d2 = d->link[convex][prec];
-			
 		}
 		while(g != g2 && orientPolaire(d, g, g2) >= M_PI)
 		{
-			test(53);
-			printf(" x : %lf, y : %lf,  angle : %lf\n", g->X, g->Y, orientPolaire(d, g, g2)); 
 			g = g2;
 			g2 = g->link[convex][suiv];
-			
 		}
 	}
 	
@@ -64,18 +52,13 @@ vertex* fusionEnv(vertex* list1, vertex* list2)
 	
 	while((d != d2 && orientPolaire(g, d, d2) >= M_PI) || (g != g2 && orientPolaire(d, g, g2) <= M_PI))
 	{
-		test(54);
 		while(d != d2 && orientPolaire(g, d, d2) >= M_PI)
 		{
-			test(55);
-			printf(" x : %lf, y : %lf,  angle : %lf\n", d->X, d->Y, orientPolaire(g, d, d2)); 
 			d = d2;
 			d2 = d->link[convex][suiv];
 		}
 		while(g != g2 && orientPolaire(d, g, g2) <= M_PI)
 		{
-			test(56);
-			printf(" x : %lf, y : %lf,  angle : %lf\n", g->X, g->Y, orientPolaire(d, g, g2)); 
 			g = g2;
 			g2 = g->link[convex][prec];
 		}
@@ -154,12 +137,6 @@ vertex* divide_convex_hull(vertex* points, unsigned int point_count)
 	}
 	
 	vertex* listLexico = triParFusion(&points[0], point_count, lexico, NULL);
-	/*vertex* v = listLexico;
-	while(v != NULL)
-	{
-		printf("x : %lf, y : %lf\n", v->X, v->Y); 
-		v = v->link[lexico][suiv];
-	}*/
 	envConvDC(listLexico, point_count);
 	
 	return listLexico;	//pointeur vers le point G (minimum lexicographique).
