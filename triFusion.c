@@ -15,7 +15,7 @@ vertex* quiGagne(vertex* v1, vertex* v2, const int type, const void* arg)
 	switch(type)
 	{
 		case VLINK_NATURAL:	return v1;
-		case VLINK_LEXICO: 	return (lexico_cmp(v1, v2)	?	v1	: v2);
+		case VLINK_LEXICO: 	return (lexico_cmp(v1, v2) == -1 ?	v1	: v2);
 		case VLINK_POLAR:	
 							return (ORIENTATION_CCW == orientation((vertex*) arg, v1, v2) ? 
 										v1	:	v2

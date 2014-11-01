@@ -74,17 +74,6 @@ vertex* graham_convex_hull(vertex* points, unsigned int point_count)
 
 
 
-double calculPolaire(const vertex* origin, const vertex* dest)
-{
-	vertex v = { .X = dest->X - origin->X, .Y = dest->Y - origin->Y};
-	double r = hypot(v.X, v.Y);
-	if(r == 0)
-		return 0.0;
-	
-	//printf("%lf//%lf  ->  %lf\n", v.X/r, v.Y/r, asin(v.Y/r));
-	
-	return v.Y/r;//asin(v.Y/r);
-}
 
 
 #define POS(k) points[fil[k]]

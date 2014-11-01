@@ -155,6 +155,12 @@ void draw()
     glColor3f(0, 0, 1);
     draw_exercice(_points_ex3, _point_count, _convex_ordonnes_ex3);
     break;
+    
+  case '4':
+
+    glColor3f(1, 1, 0);
+    draw_exercice(_points_ex4, _point_count, _convex_ordonnes_ex4);
+    break;
 
   case 'a':
 
@@ -169,6 +175,10 @@ void draw()
     glViewport(0, 0, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
     glColor3f(0, 0, 1);
     draw_exercice(_points_ex3, _point_count, _convex_ordonnes_ex3);
+    
+    glViewport(WINDOW_WIDTH / 2, 0, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+    glColor3f(1, 1, 0);
+    draw_exercice(_points_ex4, _point_count, _convex_ordonnes_ex4);
 
     break;
   }
@@ -215,14 +225,16 @@ void draw_jarvis(const vertex* points, const unsigned int point_count, const int
 void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* hull)
 {
   const vertex *v = hull;
+	int i = 0;
 
   // Rendu de l'enveloppe convexe
   glBegin(GL_LINE_LOOP);
 
-  while (v != NULL)
+  while (v != NULL && i < 1000)
   {
     drawVertex(v);
 
+	i++;
     v = v->link[VLINK_CONVEX][VLINK_FORWARD];
     if (v == hull)
       break;

@@ -10,9 +10,9 @@
 #define Y coords[1]
 
 // Orientations
-#define ORIENTATION_CW		-1
-#define ORIENTATION_INLINE	0
-#define ORIENTATION_CCW		1
+#define ORIENTATION_CW		-1		//clockwise: orientation horaire:	< 180 dans le sens des aiguille d'une montre
+#define ORIENTATION_INLINE	0		//aligné
+#define ORIENTATION_CCW		1		//counter clockwise: orientation polaire:	> 180 dans le sens des aiguille d'une montre
 
 // Liens inter vertices
 #define VLINK_TYPE_COUNT	4
@@ -45,6 +45,7 @@ vertex* vertex_at(vertex* v, int position, int vlink, int direction);
 vertex* vertex_insert(vertex* ref, vertex* nouv, int link, int direction);
 
 // Distances
+int equal(const vertex* a, const vertex* b);
 double vertex_distance(const vertex* v1, const vertex* v2);
 double square_distance_eucl(const vertex* a, const vertex* b);
 
@@ -55,5 +56,8 @@ int lexico_min(const vertex* points, const unsigned int point_count);
 // Relation d'ordre polaire
 int orientation(const vertex* a, const vertex* b, const vertex* c);
 int local_polar_min(const vertex* points, const unsigned int point_count, int point);
+
+double calculPolaire(const vertex* origin, const vertex* dest);
+double orientPolaire(const vertex* gauche, const vertex* centre, const vertex* droite);
 
 #endif

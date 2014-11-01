@@ -37,6 +37,13 @@ vertex* vertex_copy(vertex* tab, int count)
   return copies;
 }
 
+//////////////////////////////////////////////////////////
+
+int equal(const vertex* a, const vertex* b)
+{
+	return (a->X == b->X && a->Y == b->Y);
+}
+
 double vertex_distance(const vertex* v1, const vertex* v2)
 {
   return hypot(v2->Y - v1->Y, v2->X - v1->X);
@@ -51,6 +58,8 @@ double square_distance_eucl(const vertex* a, const vertex* b)
 {
   return (pow(b->X - a->X, 2) + pow(b->Y - a->Y, 2));
 }
+
+//////////////////////////////////////////////////////////
 
 int lexico_cmp(const vertex* a, const vertex* b)
 {
@@ -124,3 +133,26 @@ int local_polar_min(const vertex* points, const uint point_count, int point)
 
   return local_polar_min;
 }
+
+double calculPolaire(const vertex* origin, const vertex* dest)
+{
+	double x = dest->X - origin->X,
+			y = dest->Y - origin->Y;
+	double r = hypot(x, y);
+	if(r == 0)
+		return 0.0;
+	
+	//printf("%lf//%lf  ->  %lf\n", v.X/r, v.Y/r, asin(v.Y/r));
+	
+	return y/r;//asin(v.Y/r);
+}
+
+double orientPolaire(const vertex* gauche, const vertex* centre, const vertex* droite)
+{
+	double angle = atan2(centre->Y - droite->Y, centre->X -droite->X) - atan2(centre->Y - gauche->Y, centre->X -gauche->X);
+	angle = fmod(angle, 2.0*M_PI);	//apparement, fmod peut retourner un nombre négatif.
+	if(angle < 0)
+		angle += 2*M_PI;
+	return angle;
+}
+

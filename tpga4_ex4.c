@@ -5,20 +5,89 @@ void tpga4_ex4()
 	_convex_ordonnes_ex4 = divide_convex_hull(_points_ex4, _point_count);
 }
 
-
+#define test(n)	printf("test %d", n)
 
 vertex* fusionEnv(vertex* list1, vertex* list2)
 {
-	const int lexico = VLINK_LEXICO,	suiv = VLINK_FORWARD;
-	vertex* gg = list1, *dg = list2,
-			*d = dg;
-	vertex* gd = gg, *g;
+	const int lexico = VLINK_LEXICO,	convex = VLINK_CONVEX,	prec = VLINK_BACKWARD,	suiv = VLINK_FORWARD;
+	vertex* gg = list1, *dg = list2;
+	vertex* gd = gg, *g, *d, *g2, *d2;
+	int i = 1;
 	while(gd->link[lexico][suiv] != NULL)
+	{
 		gd = gd->link[lexico][suiv];
-	g = gd;
+		i++;
+	}
+	printf("nb list1 : %d\n\n",i);
 		
+	//on réassocie les deux couples
+	gd->link[lexico][suiv] = dg;
+	//dg->link[lexico][suiv] = gd;
 	
-	return fusion(list1, list2, lexico, NULL);
+	
+	g = gd;
+	d = dg;
+	g2 = g->link[convex][suiv];		//ce suivant est juste en dessus dans l'ordre polaire
+	d2 = d->link[convex][prec];		//ce précédant est juste en dessus dans l'ordre polaire
+	
+	while((d != d2 && orientPolaire(g, d, d2) <= M_PI) || (g != g2 && orientPolaire(d, g, g2) >= M_PI))
+	{
+		test(51);
+		while(d != d2 && orientPolaire(g, d, d2) <= M_PI)
+		{
+			test(52);
+			printf(" x : %lf, y : %lf,  angle : %lf\n", d->X, d->Y, orientPolaire(g, d, d2)); 
+			d = d2;
+			d2 = d->link[convex][prec];
+			
+		}
+		while(g != g2 && orientPolaire(d, g, g2) >= M_PI)
+		{
+			test(53);
+			printf(" x : %lf, y : %lf,  angle : %lf\n", g->X, g->Y, orientPolaire(d, g, g2)); 
+			g = g2;
+			g2 = g->link[convex][suiv];
+			
+		}
+	}
+	
+	vertex* hg = g, *hd = d;
+	//g->link[convex][prec] = d;	//grosse faute pour le reste de l'algorithme
+	//d->link[convex][suiv] = g;
+	
+	
+	//et c'est reparti dans l'autre sens
+	g = gd;
+	d = dg;
+	g2 = g->link[convex][prec];		//ce précédent est juste en dessus dans l'ordre polaire
+	d2 = d->link[convex][suiv];		//ce suivant est juste en dessus dans l'ordre polaire
+	
+	while((d != d2 && orientPolaire(g, d, d2) >= M_PI) || (g != g2 && orientPolaire(d, g, g2) <= M_PI))
+	{
+		test(54);
+		while(d != d2 && orientPolaire(g, d, d2) >= M_PI)
+		{
+			test(55);
+			printf(" x : %lf, y : %lf,  angle : %lf\n", d->X, d->Y, orientPolaire(g, d, d2)); 
+			d = d2;
+			d2 = d->link[convex][suiv];
+		}
+		while(g != g2 && orientPolaire(d, g, g2) <= M_PI)
+		{
+			test(56);
+			printf(" x : %lf, y : %lf,  angle : %lf\n", g->X, g->Y, orientPolaire(d, g, g2)); 
+			g = g2;
+			g2 = g->link[convex][prec];
+		}
+	}
+	
+	//on ferme l'enveloppe convexe.
+	g->link[convex][suiv] = d;
+	d->link[convex][prec] = g;
+	hg->link[convex][prec] = hd;
+	hd->link[convex][suiv] = hg;
+	
+	return gg;
 }
 
 /**envconv EC_DC({} S, entier taille)
@@ -36,19 +105,23 @@ vertex* fusionEnv(vertex* list1, vertex* list2)
  * */
 vertex* envConvDC(vertex* vert, unsigned int point_count)
 {
-	const int lexico = VLINK_LEXICO,	suiv = VLINK_FORWARD;
+	const int lexico = VLINK_LEXICO,	suiv = VLINK_FORWARD,	prec = VLINK_BACKWARD;
 	if(point_count < 3)
 	{
-		if(point_count == 2)
+		const int convex = VLINK_CONVEX;
+		vertex* v = vert;
+		if(point_count == 2 && !( equal(vert ,  vert->link[lexico][suiv])) )
 		{
-			const int convex = VLINK_CONVEX;
-			vertex* v = vert->link[lexico][suiv];
-			v->link[lexico][suiv] = NULL;	//pour facilité fusion et recherche de gd, dd
+			v = vert->link[lexico][suiv];
 			vert->link[convex][suiv] = v;
-			
+			v->link[convex][prec] = vert;
 		}
-		else
-			vert->link[lexico][suiv] = NULL;
+		
+		//peux importe que v == vert ou v == vert->link[lexico][suiv]
+		v->link[lexico][suiv] = NULL;//pour facilité fusion et recherche de gd, dd
+		v->link[convex][suiv] = vert;
+		vert->link[convex][prec] = v;
+		
 		return vert;
 	}
 	else
@@ -71,7 +144,6 @@ vertex* envConvDC(vertex* vert, unsigned int point_count)
 /**état de départ: chaque points ont leurs voisins polaire à NULL*/
 vertex* divide_convex_hull(vertex* points, unsigned int point_count)
 {
-	
 	const int lexico = VLINK_LEXICO,	suiv = VLINK_FORWARD;//,	prec = VLINK_BACKWARD;
 	
 	//placer tous les points en les chaînants dans la chaine "lexico" mais par ordre naturel.
@@ -80,12 +152,15 @@ vertex* divide_convex_hull(vertex* points, unsigned int point_count)
 		if( i < point_count -1)
 			points[i].link[lexico][suiv] = &points[i+1];
 	}
-	vertex* v;	//point de départ de la chaine simple;
 	
-	
-	vertex* listLexico = triParFusionDouble(&points[0], point_count-1, lexico, NULL);
-	
-	
+	vertex* listLexico = triParFusion(&points[0], point_count, lexico, NULL);
+	/*vertex* v = listLexico;
+	while(v != NULL)
+	{
+		printf("x : %lf, y : %lf\n", v->X, v->Y); 
+		v = v->link[lexico][suiv];
+	}*/
+	envConvDC(listLexico, point_count);
 	
 	return listLexico;	//pointeur vers le point G (minimum lexicographique).
 }
