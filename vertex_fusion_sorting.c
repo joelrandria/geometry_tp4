@@ -1,7 +1,5 @@
 #include "vertex_fusion_sorting.h"
 
-#include <stdio.h>
-
 void vertex_chaining(vertex* vertices, int count, int vlink, int vdirection)
 {
   int i;

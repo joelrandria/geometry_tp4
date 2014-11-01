@@ -40,7 +40,17 @@ void vertex_print_all(vertex* v, int vlink, int vdirection)
 
   while (v != 0)
   {
-    printf("<%f, %f>\r\n", v->X, v->Y);
+    if (v->link[vlink][VLINK_BACKWARD] != 0)
+      printf("<%f, %f> <-- ", v->link[vlink][VLINK_BACKWARD]->X, v->link[vlink][VLINK_BACKWARD]->Y);
+    else
+      printf("NULL <-- ");
+
+    printf("<%f, %f>", v->X, v->Y);
+
+    if (v->link[vlink][VLINK_FORWARD] != 0)
+      printf(" --> <%f, %f>\r\n", v->link[vlink][VLINK_FORWARD]->X, v->link[vlink][VLINK_FORWARD]->Y);
+    else
+      printf(" --> NULL\r\n");
 
     v = v->link[vlink][vdirection];
     if (v == beginning)

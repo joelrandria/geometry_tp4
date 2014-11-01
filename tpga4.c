@@ -138,18 +138,27 @@ void draw()
 
   case '2':
 
-    draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2);
+    draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2,
+		  0, 0, WINDOW_WIDTH, WINDOW_HEIGHT,
+		  0, 1, 0);
     break;
 
   case '3':
 
-    draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2);
+    draw_exercice(_points_ex3, _point_count, _convex_ordonnes_ex3,
+		  0, 0, WINDOW_WIDTH, WINDOW_HEIGHT,
+		  0, 0, 1);
     break;
 
   case 'a':
 
     draw_jarvis(_points_ex1, _point_count, _convex_hull);
-    draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2);
+    draw_exercice(_points_ex2, _point_count, _convex_ordonnes_ex2,
+		  WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2,
+		  0, 1, 0);
+    draw_exercice(_points_ex3, _point_count, _convex_ordonnes_ex3,
+		  0, 0, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2,
+		  0, 0, 1);
     break;
   }
 
@@ -196,24 +205,28 @@ void draw_jarvis(const vertex* points, const unsigned int point_count, const int
 
 #define drawVertex(v) glVertex2f( v->X, v->Y)
 
-void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* debList)
+void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* hull,
+		   int vp_x, int vp_y, int vp_w, int vp_h,
+		   int hull_r, int hull_g, int hull_b)
 {
-  const vertex *v = debList;
+  const vertex *v = hull;
 
-  glViewport(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+  glViewport(vp_x, vp_y, vp_w, vp_h);
 
   // Rendu des points
   draw_points(points, point_count);
 
   // Rendu de l'enveloppe convexe
   glBegin(GL_LINE_LOOP);
-
-  glColor3f(0, 1, 0);
+  glColor3f(hull_r, hull_g, hull_b);
 
   while (v != NULL)
   {
     drawVertex(v);
+
     v = v->link[VLINK_CONVEX][VLINK_FORWARD];
+    if (v == hull)
+      break;
   }
 
   glEnd();

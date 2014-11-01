@@ -46,6 +46,8 @@ void draw_points(const vertex* points, const unsigned int point_count);
 void draw_jarvis(const vertex* points, const unsigned int point_count, const int_list* hull_points);
 
 // Fonction de rendu commune aux exercices 2, 3 et 4
-void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* debList);
+void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* hull,
+		   int vp_x, int vp_y, int vp_w, int vp_h,
+		   int hull_r, int hull_g, int hull_b);
 
 #endif
