@@ -30,7 +30,6 @@ extern vertex* _points_ex4;	// copies des vertices pour l'exercice 4 (Divide & C
 // Variables globales initialisées spécifiquement par les différents exercices
 
 extern int_list* _convex_hull;		// enveloppe convexe générée par l'exercice 1 (indices de vertices)
-
 extern vertex* _convex_ordonnes_ex2;	// enveloppe convexe générée par l'exercice 2
 extern vertex* _convex_ordonnes_ex3;	// enveloppe convexe générée par l'exercice 3
 extern vertex* _convex_ordonnes_ex4;	// enveloppe convexe générée par l'exercice 4
@@ -44,10 +43,7 @@ void draw_points(const vertex* points, const unsigned int point_count);
 
 // Fonction de rendu spécifique à l'exercice 1
 void draw_jarvis(const vertex* points, const unsigned int point_count, const int_list* hull_points);
-
 // Fonction de rendu commune aux exercices 2, 3 et 4
-void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* hull,
-		   int vp_x, int vp_y, int vp_w, int vp_h,
-		   int hull_r, int hull_g, int hull_b);
+void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* hull);
 
 #endif

@@ -8,15 +8,18 @@ void tpga4_ex2()
 /**état de départ: chaque points ont leurs voisins polaire à NULL*/
 vertex* graham_convex_hull(vertex* points, unsigned int point_count)
 {
+	if(point_count == 0)
+		return NULL;
+	else if(point_count == 1)
+		return points;
+	
 	int idG = lexico_min(points, point_count);
-	const int polar = VLINK_POLAR,	suiv = VLINK_FORWARD,	prec = VLINK_BACKWARD;
+	const int polar = VLINK_POLAR,	suiv = VLINK_FORWARD;
 	vertex* G = &points[idG];
 	for(int i = 0;	i < point_count;	i++)
 	{
 		if( i < point_count -1)
-		{
 			points[i].link[polar][suiv] = &points[i+1];
-		}
 	}
 	vertex* v;	//point de départ de la chaine simple;
 	if(idG > 0)
@@ -32,16 +35,6 @@ vertex* graham_convex_hull(vertex* points, unsigned int point_count)
 	vertex* listPolaire = triParFusion(v, point_count-1, polar, G);
 	
 	vertex* v2 = NULL;
-	//définir l'ordre polaire dans l'autre sens? simple mais en O(n).
-	/*v = listPolaire;
-	while(v != NULL)
-	{
-		v->link[polar][prec] = v2;
-		v2 = v;
-		v = v->link[polar][suiv];
-	}*/
-	
-	
 	const int convex = VLINK_CONVEX;
 	G->link[convex][suiv] = listPolaire;
 	

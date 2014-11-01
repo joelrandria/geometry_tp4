@@ -8,4 +8,7 @@
 // Fonctions d'affichage
 void tpga4_ex4();
 
+/**état de départ: chaque points ont leurs voisins polaire à NULL*/
+vertex* divide_convex_hull(vertex* points, unsigned int point_count);
+
 #endif
