@@ -60,4 +60,6 @@ int local_polar_min(const vertex* points, const unsigned int point_count, int po
 double calculPolaire(const vertex* origin, const vertex* dest);
 double orientPolaire(const vertex* gauche, const vertex* centre, const vertex* droite);
 
+vertex* chainageArriere(vertex* debList, const int type);
+
 #endif

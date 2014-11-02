@@ -68,6 +68,14 @@ void convex_hull_remove_range(vertex* start, vertex* end)
 
 vertex* lexical_convex_hull(vertex* points, unsigned int point_count)
 {
+	if(point_count == 0)
+		return NULL;
+	else if(point_count == 1)
+	{
+		points->link[VLINK_CONVEX][VLINK_FORWARD] = points;
+		return points;
+	}
+	
   vertex* v2;
   vertex* v3;
 

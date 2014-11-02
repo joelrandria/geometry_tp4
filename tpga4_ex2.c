@@ -11,7 +11,10 @@ vertex* graham_convex_hull(vertex* points, unsigned int point_count)
 	if(point_count == 0)
 		return NULL;
 	else if(point_count == 1)
+	{
+		points->link[VLINK_CONVEX][VLINK_FORWARD] = points;
 		return points;
+	}
 	
 	int idG = lexico_min(points, point_count);
 	const int polar = VLINK_POLAR,	suiv = VLINK_FORWARD;
@@ -54,6 +57,8 @@ vertex* graham_convex_hull(vertex* points, unsigned int point_count)
 		v = vMax;
 		v2 = v->link[polar][suiv];
 	}
+	
+	v->link[convex][suiv] = G;
 	
 	return G;
 	//fileDePrioritePolaire(points, point_count);

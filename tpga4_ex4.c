@@ -17,7 +17,7 @@ vertex* fusionEnv(vertex* list1, vertex* list2)
 		
 	//on réassocie les deux couples
 	gd->link[lexico][suiv] = dg;
-	//dg->link[lexico][suiv] = gd;
+	//dg->link[lexico][prec] = gd;
 	
 	
 	g = gd;

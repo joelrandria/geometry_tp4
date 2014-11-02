@@ -11,8 +11,7 @@ vertex* _points_ex2 = NULL;
 vertex* _points_ex3 = NULL;
 vertex* _points_ex4 = NULL;
 
-int_list* _convex_hull = NULL;
-
+vertex* _convex_ordonnes_ex1 = NULL;
 vertex* _convex_ordonnes_ex2 = NULL;
 vertex* _convex_ordonnes_ex3 = NULL;
 vertex* _convex_ordonnes_ex4 = NULL;
@@ -141,7 +140,7 @@ void draw()
   case '1':
 
     glColor3f(1, 0, 0);
-    draw_jarvis(_points_ex1, _point_count, _convex_hull);
+    draw_exercice(_points_ex1, _point_count, _convex_ordonnes_ex1);
     break;
 
   case '2':
@@ -166,7 +165,7 @@ void draw()
 
     glViewport(0, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
     glColor3f(1, 0, 0);
-    draw_jarvis(_points_ex1, _point_count, _convex_hull);
+    draw_exercice(_points_ex1, _point_count, _convex_ordonnes_ex1);
 
     glViewport(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
     glColor3f(0, 1, 0);
@@ -200,7 +199,7 @@ void draw_points(const vertex* points, const unsigned int point_count)
   glEnd();
 }
 
-void draw_jarvis(const vertex* points, const unsigned int point_count, const int_list* hull_points)
+/*void draw_jarvis(const vertex* points, const unsigned int point_count, const int_list* hull_points)
 {
   int hull_point;
 
@@ -218,30 +217,33 @@ void draw_jarvis(const vertex* points, const unsigned int point_count, const int
 
   // Rendu des points
   draw_points(points, point_count);
-}
+}*/
 
 #define drawVertex(v) glVertex2f( v->X, v->Y)
 
 void draw_exercice(const vertex* points, const unsigned int point_count, const vertex* hull)
 {
-  const vertex *v = hull;
-	int i = 0;
+	const vertex *v = hull;
+	if(v != NULL)
+	{
+		const vertex *debList = v;
 
-  // Rendu de l'enveloppe convexe
-  glBegin(GL_LINE_LOOP);
+		// Rendu de l'enveloppe convexe
+		glBegin(GL_LINE_LOOP);
 
-  while (v != NULL && i < 1000)
-  {
-    drawVertex(v);
+		do
+		{
+			drawVertex(v);
 
-	i++;
-    v = v->link[VLINK_CONVEX][VLINK_FORWARD];
-    if (v == hull)
-      break;
-  }
+			v = v->link[VLINK_CONVEX][VLINK_FORWARD];
+		}
+		while (v != debList);
 
-  glEnd();
+		glEnd();
+	}
+	else
+		fprintf(stderr, "problème: anneau convex NULL\n");
 
-  // Rendu des points
-  draw_points(points, point_count);
+	// Rendu des points
+	draw_points(points, point_count);
 }

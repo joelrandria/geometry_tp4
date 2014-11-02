@@ -127,8 +127,8 @@ int local_polar_min(const vertex* points, const uint point_count, int point)
     if (current_point_orientation == ORIENTATION_CW)
       local_polar_min = i;
     else if (current_point_orientation == ORIENTATION_INLINE)
-      if (square_distance_eucl(&points[point], &points[i]) > square_distance_eucl(&points[point], &points[local_polar_min]))
-	local_polar_min = i;
+      if (square_distance_eucl(&points[point], &points[i]) > square_distance_eucl(&points[point], &points[local_polar_min]))	//si le point "i" est plus long de "point" que le point "local_polar_min"
+		local_polar_min = i;
   }
 
   return local_polar_min;
@@ -156,3 +156,19 @@ double orientPolaire(const vertex* gauche, const vertex* centre, const vertex* d
 	return angle;
 }
 
+vertex* chainageArriere(vertex* debList, const int type)
+{
+	vertex* v = debList, *v2 = NULL;
+	while(v != NULL)
+	{
+		v->link[type][VLINK_BACKWARD] = v2;
+		v2 = v;
+		v = v->link[type][VLINK_FORWARD];
+		if(v == debList)
+			break;
+	}
+	if(v == debList)
+		v->link[type][VLINK_BACKWARD] = v2;
+	
+	return debList;
+}

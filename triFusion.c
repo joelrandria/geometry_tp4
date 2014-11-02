@@ -73,19 +73,6 @@ vertex* triParFusion(vertex* debList, const int nb, const int type, const void* 
 					type, arg);
 }
 
-vertex* chainageArriere(vertex* debList, const int type)
-{
-	vertex* v = debList, *v2 = NULL;
-	while(v != NULL)
-	{
-		v->link[type][VLINK_BACKWARD] = v2;
-		v2 = v;
-		v = v->link[type][VLINK_FORWARD];
-	}
-	
-	return debList;
-}
-
 vertex* triParFusionDouble(vertex* debList, const int nb, const int type, const void* arg)
 {
 	vertex* v = triParFusion(debList, nb, type, arg);
